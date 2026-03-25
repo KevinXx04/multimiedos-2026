@@ -1,0 +1,296 @@
+/* =============================================
+   style.css - FirstPage de Kevincio Alvarado
+   ============================================= */
+
+/* ---- Reset básico y tipografía global ---- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8;
+    color: #2d3748;
+    line-height: 1.7;
+}
+
+/* ---- Encabezado principal ---- */
+h1 {
+    background-color: #1a365d;
+    color: #ffffff;
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 2rem;
+    letter-spacing: 1px;
+    border-bottom: 5px solid #3182ce;
+}
+
+h2 {
+    color: #1a365d;
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+    border-left: 5px solid #3182ce;
+    padding-left: 12px;
+}
+
+h3 {
+    color: #2b6cb0;
+    font-size: 1.1rem;
+    margin: 16px 0 8px;
+}
+
+/* ---- Navegación ---- */
+nav {
+    background-color: #2b6cb0;
+    padding: 12px 20px;
+    text-align: center;
+}
+
+nav a {
+    color: #bee3f8;
+    text-decoration: none;
+    margin: 0 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+nav a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* ---- Contenedor central ---- */
+.contenido {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px 20px 8px;
+}
+
+/* ---- Separador ---- */
+hr {
+    border: none;
+    border-top: 1px solid #cbd5e0;
+    margin: 0 0 24px;
+}
+
+/* ---- Secciones ---- */
+section {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+/* ---- Sección Sobre mí ---- */
+#sobre-mi p {
+    font-size: 1rem;
+    text-align: justify;
+    background-color: #ebf8ff;
+    border-left: 4px solid #3182ce;
+    padding: 14px 18px;
+    border-radius: 4px;
+}
+
+/* ---- Imagen de perfil ---- */
+#imagen img {
+    display: block;
+    width: 280px;
+    height: auto;
+    border: 4px solid #3182ce;
+    border-radius: 10px;
+    margin: 12px auto 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ---- Video / Multimedia ---- */
+#multimedia iframe {
+    display: block;
+    margin: 14px auto 0;
+    border: 3px solid #bee3f8;
+    border-radius: 8px;
+    max-width: 100%;
+}
+
+/* ---- Tabla de habilidades ---- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 0.95rem;
+}
+
+table thead {
+    background-color: #1a365d;
+    color: #ffffff;
+}
+
+table th {
+    padding: 12px 16px;
+    text-align: left;
+    letter-spacing: 0.5px;
+}
+
+table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #ebf8ff;
+}
+
+table tbody tr:hover {
+    background-color: #bee3f8;
+}
+
+/* ---- Listas ---- */
+ol, ul {
+    padding-left: 24px;
+    margin-bottom: 10px;
+}
+
+li {
+    margin-bottom: 6px;
+    padding: 4px 0;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+li:last-child {
+    border-bottom: none;
+}
+
+/* ---- Enlaces generales ---- */
+a {
+    color: #2b6cb0;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: #1a365d;
+    text-decoration: underline;
+}
+
+#enlaces ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+#enlaces li {
+    padding: 8px 12px;
+    background-color: #ebf8ff;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    border-bottom: none;
+}
+
+#enlaces li a {
+    font-weight: 600;
+}
+
+/* ---- Formulario ---- */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: 600;
+    color: #1a365d;
+    margin-top: 16px;
+    margin-bottom: 4px;
+    display: block;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    background-color: #f7fafc;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
+    background-color: #ffffff;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+button[type="submit"] {
+    background-color: #1a365d;
+    color: #ffffff;
+    border: none;
+    padding: 11px 28px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button[type="submit"]:hover {
+    background-color: #2b6cb0;
+    transform: translateY(-1px);
+}
+
+button[type="reset"] {
+    background-color: #ffffff;
+    color: #718096;
+    border: 1px solid #cbd5e0;
+    padding: 11px 28px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button[type="reset"]:hover {
+    background-color: #f7fafc;
+    border-color: #a0aec0;
+}
+
+/* ---- Footer ---- */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #1a365d;
+    color: #bee3f8;
+    margin-top: 8px;
+    font-size: 0.9rem;
+}
+
+footer a {
+    color: #90cdf4;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+footer a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
