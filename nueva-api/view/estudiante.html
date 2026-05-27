@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="es" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Lista de Estudiantes</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+            crossorigin="anonymous"
+        />
+    </head>
+    <body>
+        <div class="container mt-4">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <a href="index.html" class="btn btn-outline-secondary btn-sm">← Volver</a>
+                <h2 class="mb-0">Estudiantes</h2>
+            </div>
+
+            <!-- ── Formulario insertar ───────────────────────────────────── -->
+            <form id="formulario" class="row g-2 mb-4">
+                <div class="col-md-2">
+                    <input type="text"  class="form-control" id="cedula"            placeholder="Cédula" />
+                </div>
+                <div class="col-md-2">
+                    <input type="text"  class="form-control" id="nombre"            placeholder="Nombre" />
+                </div>
+                <div class="col-md-2">
+                    <input type="text"  class="form-control" id="apellidopaterno"   placeholder="Apellido paterno" />
+                </div>
+                <div class="col-md-2">
+                    <input type="text"  class="form-control" id="apellidomaterno"   placeholder="Apellido materno" />
+                </div>
+                <div class="col-md-3">
+                    <input type="email" class="form-control" id="correoelectronico" placeholder="Correo electrónico" />
+                </div>
+                <div class="col-md-2">
+                    <input type="text"  class="form-control" id="telefono"          placeholder="Teléfono" />
+                </div>
+                <div class="col-md-2">
+                    <input type="text"  class="form-control" id="telefonocelular"   placeholder="Celular" />
+                </div>
+                <div class="col-md-2">
+                    <input type="date"  class="form-control" id="fechanacimiento" />
+                </div>
+                <div class="col-md-2">
+                    <select class="form-select" id="sexo">
+                        <option value="">Sexo</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Femenino">Femenino</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="text"  class="form-control" id="direccion"         placeholder="Dirección" />
+                </div>
+                <div class="col-md-2">
+                    <input type="text"  class="form-control" id="nacionalidad"      placeholder="Nacionalidad" />
+                </div>
+                <div class="col-md-1">
+                    <input type="number" class="form-control" id="idCarreras"       placeholder="Carrera" />
+                </div>
+                <div class="col-md-2">
+                    <input type="text"  class="form-control" id="usuario"           placeholder="Usuario" />
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Insertar</button>
+                </div>
+            </form>
+
+            <!-- ── Tabla ─────────────────────────────────────────────────── -->
+            <div class="table-responsive">
+                <table class="table table-primary table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cédula</th>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Correo</th>
+                            <th>Teléfono</th>
+                            <th>Sexo</th>
+                            <th>Usuario</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaEstudiante"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── Modal Editar ──────────────────────────────────────────────── -->
+        <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEditarLabel">Editar Estudiante</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="edit_id" />
+                        <div class="row g-2">
+                            <div class="col-md-3">
+                                <input type="text"   class="form-control" id="edit_cedula"            placeholder="Cédula" />
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text"   class="form-control" id="edit_nombre"            placeholder="Nombre" />
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text"   class="form-control" id="edit_apellidopaterno"   placeholder="Apellido paterno" />
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text"   class="form-control" id="edit_apellidomaterno"   placeholder="Apellido materno" />
+                            </div>
+                            <div class="col-md-4">
+                                <input type="email"  class="form-control" id="edit_correoelectronico" placeholder="Correo electrónico" />
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text"   class="form-control" id="edit_telefono"          placeholder="Teléfono" />
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text"   class="form-control" id="edit_telefonocelular"   placeholder="Celular" />
+                            </div>
+                            <div class="col-md-3">
+                                <input type="date"   class="form-control" id="edit_fechanacimiento" />
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select" id="edit_sexo">
+                                    <option value="">Sexo</option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Femenino">Femenino</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text"   class="form-control" id="edit_direccion"         placeholder="Dirección" />
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text"   class="form-control" id="edit_nacionalidad"      placeholder="Nacionalidad" />
+                            </div>
+                            <div class="col-md-2">
+                                <input type="number" class="form-control" id="edit_idCarreras"        placeholder="Carrera" />
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text"   class="form-control" id="edit_usuario"           placeholder="Usuario" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-warning"   id="btnGuardarEdicion">Guardar cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"
+        ></script>
+        <script type="module" src="../controllers/estudianteController.js"></script>
+    </body>
+</html>

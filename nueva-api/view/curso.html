@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Cursos</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+            crossorigin="anonymous"
+        />
+    </head>
+    <body>
+        <div class="container mt-4">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <a href="index.html" class="btn btn-outline-secondary btn-sm">← Volver</a>
+                <h2 class="mb-0">Cursos</h2>
+            </div>
+
+            <!-- ── Formulario insertar ───────────────────────────────────── -->
+            <form id="formulario" class="row g-2 mb-4">
+                <div class="col-md-3">
+                    <input type="text"   class="form-control" id="nombre"      placeholder="Nombre" />
+                </div>
+                <div class="col-md-4">
+                    <input type="text"   class="form-control" id="descripcion" placeholder="Descripción" />
+                </div>
+                <div class="col-md-2">
+                    <input type="number" class="form-control" id="tiempo"      placeholder="Tiempo (hrs)" />
+                </div>
+                <div class="col-md-2">
+                    <input type="text"   class="form-control" id="usuario"     placeholder="Usuario" />
+                </div>
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-primary w-100">+</button>
+                </div>
+            </form>
+
+            <!-- ── Tabla ─────────────────────────────────────────────────── -->
+            <div class="table-responsive">
+                <table class="table table-primary table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Tiempo</th>
+                            <th>Usuario</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaCurso"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── Modal Editar ──────────────────────────────────────────────── -->
+        <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEditarLabel">Editar Curso</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="edit_id" />
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input type="text"   class="form-control" id="edit_nombre"      placeholder="Nombre" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <input type="text"   class="form-control" id="edit_descripcion" placeholder="Descripción" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tiempo (hrs)</label>
+                            <input type="number" class="form-control" id="edit_tiempo"      placeholder="Tiempo" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Usuario</label>
+                            <input type="text"   class="form-control" id="edit_usuario"     placeholder="Usuario" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-warning"   id="btnGuardarEdicion">Guardar cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"
+        ></script>
+        <script type="module" src="../controllers/cursoController.js"></script>
+    </body>
+</html>
