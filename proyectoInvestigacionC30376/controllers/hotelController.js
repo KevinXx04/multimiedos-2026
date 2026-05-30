@@ -1,5 +1,5 @@
 import apiFetch from './api.js';
-const BASE = 'https://paginas-web-cr.com/Api/hotelApi/hotel/';
+const BASE = 'https://paginas-web-cr.com/Api/hotelApi/hotel/hotel.php';
 
 document.addEventListener('DOMContentLoaded', () => {
     listar();
@@ -38,6 +38,7 @@ function dibujarTabla(datos) {
             <td>${h.descripcion ?? ''}</td>
             <td>${h.telefono ?? ''}</td>
             <td>${h.correo ?? ''}</td>
+            <td>${h.sitio_web ? `<a href="${h.sitio_web}" target="_blank">${h.sitio_web}</a>` : ''}</td>
             <td>
                 <button class="btn btn-warning btn-sm" data-action="editar"     data-id="${h.id}">Editar</button>
                 <button class="btn btn-danger  btn-sm" data-action="desactivar" data-id="${h.id}">Desactivar</button>
@@ -53,6 +54,8 @@ function insertar() {
         descripcion: document.getElementById('descripcion').value,
         telefono:    document.getElementById('telefono').value,
         correo:      document.getElementById('correo').value,
+        sitio_web:   document.getElementById('sitio_web').value,
+        usuario:     document.getElementById('usuario').value,
     };
     apiFetch(BASE, { method: 'POST', body: JSON.stringify(datos) })
         .then(r => r.json())
@@ -62,7 +65,7 @@ function insertar() {
 
 // ── UPDATE ────────────────────────────────────────────────────────────────────
 function abrirEditar(id) {
-    apiFetch(BASE + id)
+    apiFetch(BASE + '?id=' + id)
         .then(r => r.json())
         .then(data => {
             const h = data.data ?? data;
@@ -72,20 +75,24 @@ function abrirEditar(id) {
             document.getElementById('edit_descripcion').value = item.descripcion ?? '';
             document.getElementById('edit_telefono').value    = item.telefono ?? '';
             document.getElementById('edit_correo').value      = item.correo ?? '';
+            document.getElementById('edit_sitio_web').value   = item.sitio_web ?? '';
+            document.getElementById('edit_usuario').value     = item.usuario ?? '';
             bootstrap.Modal.getOrCreateInstance(document.getElementById('modalEditar')).show();
         })
         .catch(console.error);
 }
 
 function actualizar() {
-    const id = document.getElementById('edit_id').value;
     const datos = {
+        id:          Number(document.getElementById('edit_id').value),
         nombre:      document.getElementById('edit_nombre').value,
         descripcion: document.getElementById('edit_descripcion').value,
         telefono:    document.getElementById('edit_telefono').value,
         correo:      document.getElementById('edit_correo').value,
+        sitio_web:   document.getElementById('edit_sitio_web').value,
+        usuario:     document.getElementById('edit_usuario').value,
     };
-    apiFetch(BASE + id, { method: 'PUT', body: JSON.stringify(datos) })
+    apiFetch(BASE, { method: 'PUT', body: JSON.stringify(datos) })
         .then(r => r.json())
         .then(data => {
             console.log(data);
@@ -99,7 +106,7 @@ function actualizar() {
 // ── DEACTIVATE ────────────────────────────────────────────────────────────────
 function desactivar(id) {
     if (!confirm(`¿Desactivar hotel ID ${id}?`)) return;
-    apiFetch(BASE + id, { method: 'DELETE' })
+    apiFetch(BASE, { method: 'DELETE', body: JSON.stringify({ id: Number(id) }) })
         .then(r => r.json())
         .then(data => { console.log(data); alert('Hotel desactivado'); listar(); })
         .catch(console.error);

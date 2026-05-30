@@ -1,5 +1,5 @@
 import apiFetch from './api.js';
-const BASE = 'https://paginas-web-cr.com/Api/hotelApi/reservacion/';
+const BASE = 'https://paginas-web-cr.com/Api/hotelApi/reservacion/reservacion.php';
 
 document.addEventListener('DOMContentLoaded', () => {
     listar();
@@ -34,11 +34,13 @@ function dibujarTabla(datos) {
         tbody.innerHTML += `
         <tr>
             <td>${r.id}</td>
-            <td>${r.idCliente ?? ''}</td>
-            <td>${r.idHabitacion ?? ''}</td>
-            <td>${r.fechaEntrada ?? ''}</td>
-            <td>${r.fechaSalida ?? ''}</td>
-            <td>${r.observaciones ?? ''}</td>
+            <td>${r.id_cliente ?? ''}</td>
+            <td>${r.id_habitacion ?? ''}</td>
+            <td>${r.fecha_entrada ?? ''}</td>
+            <td>${r.fecha_salida ?? ''}</td>
+            <td>${r.cantidad_personas ?? ''}</td>
+            <td>${r.estado ?? ''}</td>
+            <td>${r.total ?? ''}</td>
             <td>
                 <button class="btn btn-warning btn-sm" data-action="editar"     data-id="${r.id}">Editar</button>
                 <button class="btn btn-danger  btn-sm" data-action="desactivar" data-id="${r.id}">Desactivar</button>
@@ -50,11 +52,14 @@ function dibujarTabla(datos) {
 // ── CREATE ────────────────────────────────────────────────────────────────────
 function insertar() {
     const datos = {
-        idCliente:     document.getElementById('idCliente').value,
-        idHabitacion:  document.getElementById('idHabitacion').value,
-        fechaEntrada:  document.getElementById('fechaEntrada').value,
-        fechaSalida:   document.getElementById('fechaSalida').value,
-        observaciones: document.getElementById('observaciones').value,
+        id_cliente:        Number(document.getElementById('id_cliente').value),
+        id_habitacion:     Number(document.getElementById('id_habitacion').value),
+        fecha_entrada:     document.getElementById('fecha_entrada').value,
+        fecha_salida:      document.getElementById('fecha_salida').value,
+        cantidad_personas: Number(document.getElementById('cantidad_personas').value),
+        estado:            document.getElementById('estado').value,
+        total:             Number(document.getElementById('total').value),
+        usuario:           document.getElementById('usuario').value,
     };
     apiFetch(BASE, { method: 'POST', body: JSON.stringify(datos) })
         .then(r => r.json())
@@ -64,40 +69,52 @@ function insertar() {
 
 // ── UPDATE ────────────────────────────────────────────────────────────────────
 function abrirEditar(id) {
-    apiFetch(BASE + id)
+    apiFetch(BASE + '?id=' + id)
         .then(r => r.json())
         .then(data => {
-            const r = Array.isArray(data.data ?? data) ? (data.data ?? data)[0] : (data.data ?? data);
-            document.getElementById('edit_id').value            = r.id;
-            document.getElementById('edit_idCliente').value     = r.idCliente ?? '';
-            document.getElementById('edit_idHabitacion').value  = r.idHabitacion ?? '';
-            document.getElementById('edit_fechaEntrada').value  = r.fechaEntrada ?? '';
-            document.getElementById('edit_fechaSalida').value   = r.fechaSalida ?? '';
-            document.getElementById('edit_observaciones').value = r.observaciones ?? '';
+            const h = data.data ?? data;
+            const r = Array.isArray(h) ? h[0] : h;
+            document.getElementById('edit_id').value                = r.id;
+            document.getElementById('edit_id_cliente').value        = r.id_cliente ?? '';
+            document.getElementById('edit_id_habitacion').value     = r.id_habitacion ?? '';
+            document.getElementById('edit_fecha_entrada').value     = r.fecha_entrada ?? '';
+            document.getElementById('edit_fecha_salida').value      = r.fecha_salida ?? '';
+            document.getElementById('edit_cantidad_personas').value = r.cantidad_personas ?? '';
+            document.getElementById('edit_estado').value            = r.estado ?? 'Pendiente';
+            document.getElementById('edit_total').value             = r.total ?? '';
+            document.getElementById('edit_usuario').value           = r.usuario ?? '';
             bootstrap.Modal.getOrCreateInstance(document.getElementById('modalEditar')).show();
         })
         .catch(console.error);
 }
 
 function actualizar() {
-    const id = document.getElementById('edit_id').value;
     const datos = {
-        idCliente:     document.getElementById('edit_idCliente').value,
-        idHabitacion:  document.getElementById('edit_idHabitacion').value,
-        fechaEntrada:  document.getElementById('edit_fechaEntrada').value,
-        fechaSalida:   document.getElementById('edit_fechaSalida').value,
-        observaciones: document.getElementById('edit_observaciones').value,
+        id:                Number(document.getElementById('edit_id').value),
+        id_cliente:        Number(document.getElementById('edit_id_cliente').value),
+        id_habitacion:     Number(document.getElementById('edit_id_habitacion').value),
+        fecha_entrada:     document.getElementById('edit_fecha_entrada').value,
+        fecha_salida:      document.getElementById('edit_fecha_salida').value,
+        cantidad_personas: Number(document.getElementById('edit_cantidad_personas').value),
+        estado:            document.getElementById('edit_estado').value,
+        total:             Number(document.getElementById('edit_total').value),
+        usuario:           document.getElementById('edit_usuario').value,
     };
-    apiFetch(BASE + id, { method: 'PUT', body: JSON.stringify(datos) })
+    apiFetch(BASE, { method: 'PUT', body: JSON.stringify(datos) })
         .then(r => r.json())
-        .then(data => { console.log(data); bootstrap.Modal.getInstance(document.getElementById('modalEditar')).hide(); alert('Reservación actualizada'); listar(); })
+        .then(data => {
+            console.log(data);
+            bootstrap.Modal.getInstance(document.getElementById('modalEditar')).hide();
+            alert('Reservación actualizada');
+            listar();
+        })
         .catch(console.error);
 }
 
 // ── DEACTIVATE ────────────────────────────────────────────────────────────────
 function desactivar(id) {
     if (!confirm(`¿Desactivar reservación ID ${id}?`)) return;
-    apiFetch(BASE + id, { method: 'DELETE' })
+    apiFetch(BASE, { method: 'DELETE', body: JSON.stringify({ id: Number(id) }) })
         .then(r => r.json())
         .then(data => { console.log(data); alert('Reservación desactivada'); listar(); })
         .catch(console.error);

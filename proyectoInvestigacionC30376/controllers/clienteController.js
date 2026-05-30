@@ -1,5 +1,5 @@
 import apiFetch from './api.js';
-const BASE = 'https://paginas-web-cr.com/Api/hotelApi/cliente/';
+const BASE = 'https://paginas-web-cr.com/Api/hotelApi/cliente/cliente.php';
 
 document.addEventListener('DOMContentLoaded', () => {
     listar();
@@ -23,7 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function listar() {
     apiFetch(BASE)
         .then(r => r.json())
-        .then(data => dibujarTabla(data.data ?? data))
+        .then(data => {
+            console.log('cliente GET:', JSON.stringify(data));
+            dibujarTabla(data.data ?? data);
+        })
         .catch(console.error);
 }
 
@@ -35,8 +38,8 @@ function dibujarTabla(datos) {
         <tr>
             <td>${c.id}</td>
             <td>${c.nombre ?? ''}</td>
-            <td>${c.apellido ?? ''}</td>
-            <td>${c.cedula ?? ''}</td>
+            <td>${c.apellidos ?? ''}</td>
+            <td>${c.identificacion ?? ''}</td>
             <td>${c.correo ?? ''}</td>
             <td>${c.telefono ?? ''}</td>
             <td>
@@ -50,11 +53,13 @@ function dibujarTabla(datos) {
 // ── CREATE ────────────────────────────────────────────────────────────────────
 function insertar() {
     const datos = {
-        nombre:   document.getElementById('nombre').value,
-        apellido: document.getElementById('apellido').value,
-        cedula:   document.getElementById('cedula').value,
-        correo:   document.getElementById('correo').value,
-        telefono: document.getElementById('telefono').value,
+        nombre:         document.getElementById('nombre').value,
+        apellidos:      document.getElementById('apellidos').value,
+        correo:         document.getElementById('correo').value,
+        telefono:       document.getElementById('telefono').value,
+        identificacion: document.getElementById('identificacion').value,
+        usuario:        document.getElementById('usuario').value,
+        activo:         1,
     };
     apiFetch(BASE, { method: 'POST', body: JSON.stringify(datos) })
         .then(r => r.json())
@@ -64,42 +69,48 @@ function insertar() {
 
 // ── UPDATE ────────────────────────────────────────────────────────────────────
 function abrirEditar(id) {
-    apiFetch(BASE + id)
+    apiFetch(BASE + '?id=' + id)
         .then(r => r.json())
         .then(data => {
-            const c = Array.isArray(data.data ?? data) ? (data.data ?? data)[0] : (data.data ?? data);
-            document.getElementById('edit_id').value        = c.id;
-            document.getElementById('edit_nombre').value    = c.nombre ?? '';
-            document.getElementById('edit_apellido').value  = c.apellido ?? '';
-            document.getElementById('edit_cedula').value    = c.cedula ?? '';
-            document.getElementById('edit_correo').value    = c.correo ?? '';
-            document.getElementById('edit_telefono').value  = c.telefono ?? '';
-            document.getElementById('edit_direccion').value = c.direccion ?? '';
+            const h = data.data ?? data;
+            const c = Array.isArray(h) ? h[0] : h;
+            document.getElementById('edit_id').value             = c.id;
+            document.getElementById('edit_nombre').value         = c.nombre ?? '';
+            document.getElementById('edit_apellidos').value      = c.apellidos ?? '';
+            document.getElementById('edit_correo').value         = c.correo ?? '';
+            document.getElementById('edit_telefono').value       = c.telefono ?? '';
+            document.getElementById('edit_identificacion').value = c.identificacion ?? '';
+            document.getElementById('edit_usuario').value        = c.usuario ?? '';
             bootstrap.Modal.getOrCreateInstance(document.getElementById('modalEditar')).show();
         })
         .catch(console.error);
 }
 
 function actualizar() {
-    const id = document.getElementById('edit_id').value;
     const datos = {
-        nombre:    document.getElementById('edit_nombre').value,
-        apellido:  document.getElementById('edit_apellido').value,
-        cedula:    document.getElementById('edit_cedula').value,
-        correo:    document.getElementById('edit_correo').value,
-        telefono:  document.getElementById('edit_telefono').value,
-        direccion: document.getElementById('edit_direccion').value,
+        id:             Number(document.getElementById('edit_id').value),
+        nombre:         document.getElementById('edit_nombre').value,
+        apellidos:      document.getElementById('edit_apellidos').value,
+        correo:         document.getElementById('edit_correo').value,
+        telefono:       document.getElementById('edit_telefono').value,
+        identificacion: document.getElementById('edit_identificacion').value,
+        usuario:        document.getElementById('edit_usuario').value,
     };
-    apiFetch(BASE + id, { method: 'PUT', body: JSON.stringify(datos) })
+    apiFetch(BASE, { method: 'PUT', body: JSON.stringify(datos) })
         .then(r => r.json())
-        .then(data => { console.log(data); bootstrap.Modal.getInstance(document.getElementById('modalEditar')).hide(); alert('Cliente actualizado'); listar(); })
+        .then(data => {
+            console.log(data);
+            bootstrap.Modal.getInstance(document.getElementById('modalEditar')).hide();
+            alert('Cliente actualizado');
+            listar();
+        })
         .catch(console.error);
 }
 
 // ── DEACTIVATE ────────────────────────────────────────────────────────────────
 function desactivar(id) {
     if (!confirm(`¿Desactivar cliente ID ${id}?`)) return;
-    apiFetch(BASE + id, { method: 'DELETE' })
+    apiFetch(BASE, { method: 'DELETE', body: JSON.stringify({ id: Number(id) }) })
         .then(r => r.json())
         .then(data => { console.log(data); alert('Cliente desactivado'); listar(); })
         .catch(console.error);
