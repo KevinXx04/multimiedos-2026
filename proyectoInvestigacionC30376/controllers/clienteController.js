@@ -24,8 +24,7 @@ function listar() {
     apiFetch(BASE)
         .then(r => r.json())
         .then(data => {
-            console.log('cliente GET:', JSON.stringify(data));
-            dibujarTabla(data.data ?? data);
+                        dibujarTabla(data.data ?? data);
         })
         .catch(console.error);
 }
@@ -33,7 +32,7 @@ function listar() {
 function dibujarTabla(datos) {
     const tbody = document.getElementById('tablaBody');
     tbody.innerHTML = '';
-    datos.forEach(c => {
+    datos.filter(c => String(c.activo) === '1').forEach(c => {
         tbody.innerHTML += `
         <tr>
             <td>${c.id}</td>
@@ -63,7 +62,7 @@ function insertar() {
     };
     apiFetch(BASE, { method: 'POST', body: JSON.stringify(datos) })
         .then(r => r.json())
-        .then(data => { console.log(data); alert('Cliente creado'); document.getElementById('formInsertar').reset(); listar(); })
+        .then(data => { alert('Cliente creado'); document.getElementById('formInsertar').reset(); listar(); })
         .catch(console.error);
 }
 
@@ -99,7 +98,6 @@ function actualizar() {
     apiFetch(BASE, { method: 'PUT', body: JSON.stringify(datos) })
         .then(r => r.json())
         .then(data => {
-            console.log(data);
             bootstrap.Modal.getInstance(document.getElementById('modalEditar')).hide();
             alert('Cliente actualizado');
             listar();
@@ -112,6 +110,16 @@ function desactivar(id) {
     if (!confirm(`¿Desactivar cliente ID ${id}?`)) return;
     apiFetch(BASE, { method: 'DELETE', body: JSON.stringify({ id: Number(id) }) })
         .then(r => r.json())
-        .then(data => { console.log(data); alert('Cliente desactivado'); listar(); })
-        .catch(console.error);
+        .then(data => {
+                        if (data.code === 200) {
+                alert('Cliente desactivado');
+                listar();
+            } else {
+                alert('Error del servidor: ' + (data.message ?? JSON.stringify(data)));
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Error de conexión. Verifica que el proxy esté corriendo (node proxy.js).');
+        });
 }
