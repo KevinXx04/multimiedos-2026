@@ -1,0 +1,97 @@
+/* Paleta Cyan & Gris — Hotel Manager */
+:root {
+    --cyan:        #0891b2;
+    --cyan-dark:   #0e7490;
+    --cyan-deeper: #164e63;
+    --cyan-light:  #cffafe;
+    --cyan-xlight: #ecfeff;
+    --gray-bg:     #f1f5f9;
+    --gray-border: #cbd5e1;
+    --gray-text:   #475569;
+}
+
+/* Fondo general */
+body {
+    background-color: var(--gray-bg) !important;
+}
+
+/* Navbar */
+.navbar.bg-dark {
+    background-color: var(--cyan-deeper) !important;
+}
+
+.navbar-brand {
+    color: var(--cyan-light) !important;
+    letter-spacing: .04em;
+}
+
+/* Botones primarios (Agregar "+") */
+.btn-primary {
+    background-color: var(--cyan) !important;
+    border-color: var(--cyan-dark) !important;
+    color: #fff !important;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--cyan-dark) !important;
+    border-color: var(--cyan-deeper) !important;
+}
+
+/* Botones guardar (antes btn-warning) */
+.btn-warning {
+    background-color: var(--cyan-dark) !important;
+    border-color: var(--cyan-deeper) !important;
+    color: #fff !important;
+}
+.btn-warning:hover,
+.btn-warning:focus {
+    background-color: var(--cyan-deeper) !important;
+    border-color: var(--cyan-deeper) !important;
+    color: #fff !important;
+}
+
+/* Encabezados de tabla */
+thead.table-dark th,
+.table-dark th {
+    background-color: var(--cyan-dark) !important;
+    color: #fff !important;
+    border-color: var(--cyan) !important;
+}
+
+/* Filas alternadas con tinte cyan muy suave */
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    background-color: rgba(8, 145, 178, 0.05);
+}
+
+/* Modal */
+.modal-header {
+    background-color: var(--cyan-xlight);
+    border-bottom: 2px solid var(--cyan);
+}
+
+.modal-title {
+    color: var(--cyan-deeper);
+    font-weight: 600;
+}
+
+.modal-footer {
+    background-color: var(--gray-bg);
+}
+
+/* Títulos de sección (h2) */
+.container > h2 {
+    color: var(--cyan-deeper);
+    font-weight: 700;
+    border-left: 4px solid var(--cyan);
+    padding-left: .6rem;
+}
+
+/* Tarjetas de la pantalla principal */
+.card {
+    border-color: var(--gray-border);
+}
+
+.card-mod .card-title {
+    color: var(--cyan-dark);
+    font-weight: 600;
+}
